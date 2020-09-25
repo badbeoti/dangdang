@@ -27,11 +27,13 @@ function DataList(props: DataProps) {
 
 	return (
 		<div>
-			{data.map((item, index) => (
-				<li key={index}>
-					{index}
-					{item.대여소_구}
-				</li>
+			{newData.map((item, index) => (
+				<ul key={index}>
+					<li>{item.id}</li>
+					<li>{item.name}</li>
+					<li>{item.size}</li>
+					<li>{item.division}</li>
+				</ul>
 			))}
 		</div>
 	);
