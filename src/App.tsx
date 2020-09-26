@@ -2,42 +2,7 @@ import React, { useRef, useEffect, useState } from "react";
 import "./App.css";
 import * as d3 from "d3";
 import { select, selectAll } from "d3-selection";
-import data from "./data/data.json";
-import { stringify } from "querystring";
-
-interface DataProps {
-	data: typeof data;
-}
-
-function DataList(props: DataProps) {
-	const { data } = props;
-	const [prevData, setData] = useState(props);
-	const newData = data.map((item) => {
-		const newObj = {
-			name: item.대여소명,
-			size: item.거치대수,
-			division: item.대여소_구,
-			id: item.대여소ID,
-		};
-		return newObj;
-	});
-
-	console.log(newData);
-	// 드디어... 데이터셋팅 완료....
-
-	return (
-		<div>
-			{newData.map((item, index) => (
-				<ul key={index}>
-					<li>{item.id}</li>
-					<li>{item.name}</li>
-					<li>{item.size}</li>
-					<li>{item.division}</li>
-				</ul>
-			))}
-		</div>
-	);
-}
+import DataList from "./DataList";
 
 function App() {
 	// console.log(data);
@@ -53,7 +18,7 @@ function App() {
 
 	return (
 		<>
-			<DataList data={data}></DataList>
+			<DataList></DataList>
 		</>
 		// <div>
 		// 	<svg ref={svgRef} />
