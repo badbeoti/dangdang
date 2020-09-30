@@ -1,4 +1,4 @@
-import React, from "react";
+import React from "react";
 import "./App.css";
 import "d3";
 import DataList from "./component/DataList";
