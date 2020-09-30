@@ -1,5 +1,5 @@
 import React from "react";
-import newData from "./data/newData";
+import newData from "../data/newData";
 
 function DataList() {
 	return (
