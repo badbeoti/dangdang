@@ -3,6 +3,7 @@ import "./App.css";
 import * as d3 from "d3";
 import DataList from "./component/DataList";
 import newData from "./data/newData";
+import styled from "styled-components";
 
 function App() {
 	console.log(newData);
