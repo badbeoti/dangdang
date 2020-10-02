@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import newData from "../data/newData";
-import ButtonList from "./SelectInput";
+import ButtonList from "./ButtonList";
 import * as d3 from "d3";
 
 const testFilter = d3.group(newData, (d) => d.division);

@@ -1,7 +1,7 @@
 import React from "react";
 import "./App.css";
 // import DataList from "./component/DataList";
-import ButtonList from "./component/SelectInput";
+import ButtonList from "./component/ButtonList";
 import newData from "./data/newData";
 import * as d3 from "d3";
 
