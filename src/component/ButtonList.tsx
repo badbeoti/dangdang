@@ -69,6 +69,7 @@ function Button({ name }: DivisionProps) {
 }
 
 function ButtonList() {
+	console.log(Button);
 	return (
 		<>
 			{divisionList.map((div) => (
