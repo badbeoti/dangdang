@@ -1,15 +1,15 @@
-import React, { ReactNode } from "react";
+import React, { ButtonHTMLAttributes } from "react";
 import styled from "styled-components";
 
 interface DivisionProps {
 	name: string;
-	id?: number;
+	id: number;
 	isSelect: boolean;
 }
 
-interface IProps extends DivisionProps {
+interface ISection extends ButtonHTMLAttributes<HTMLButtonElement> {
+	divisionList: { name: string; id: number; isSelect: boolean }[];
 	onToggle: (key: number) => void;
-	children: ReactNode;
 }
 
 const StyledButton: any = styled.button`
@@ -43,22 +43,18 @@ const StyledButton: any = styled.button`
 	}
 `;
 
-function Button({ children }: IProps) {
-	return <StyledButton>{children}</StyledButton>;
-}
-
-function ButtonList({ divisionList }, { onToggle }: IProps) {
-	console.log(Button);
+function ButtonList({ divisionList, onToggle }: ISection) {
 	return (
 		<>
 			{divisionList.map((div: DivisionProps) => (
-				<Button
+				<StyledButton
 					name={div.name}
-					children={div.name}
 					isSelect={div.isSelect}
 					key={div.id}
-					onToggle={onToggle}
-				></Button>
+					onClick={() => onToggle(div.id)}
+				>
+					{div.name}
+				</StyledButton>
 			))}
 		</>
 	);
