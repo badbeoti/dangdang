@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import newData from "../data/newData";
+import divisionList from "../data/divisionList";
 import ButtonList from "./ButtonList";
 import * as d3 from "d3";
 
@@ -13,11 +14,14 @@ console.log(testFilter.get("강남구")!.length);
 console.log(gangnamSize);
 
 function InputSection() {
-	const divArray: Array<string> = [];
-	const [arr, setArr] = useState(divArray);
+	const [arr, setArr] = useState(divisionList);
 	useEffect(() => {
 		return () => {};
 	}, []);
+
+	const onToggle = (key: number) => {
+		setArr(arr.map((div) => (div.id === key ? { ...div, play: !div.isSelect } : div)));
+	};
 
 	// const onClick = (e: MouseEvent) => {
 	// 	setArr(divArray.concat(e.target.name));
@@ -25,7 +29,7 @@ function InputSection() {
 
 	return (
 		<section>
-			<ButtonList></ButtonList>
+			<ButtonList divisionList={divisionList} onToggle={onToggle}></ButtonList>
 		</section>
 	);
 }

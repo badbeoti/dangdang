@@ -1,11 +1,18 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import styled from "styled-components";
 
-type DivisionProps = {
+interface DivisionProps {
 	name: string;
-};
+	id?: number;
+	isSelect: boolean;
+}
 
-const StyledButton = styled.button`
+interface IProps extends DivisionProps {
+	onToggle: (key: number) => void;
+	children: ReactNode;
+}
+
+const StyledButton: any = styled.button`
 	/* 공통 스타일 */
 	display: inline-flex;
 	outline: none;
@@ -22,12 +29,12 @@ const StyledButton = styled.button`
 	font-size: 1rem;
 
 	/* 색상 */
-	background: #228be6;
+	background: ${(props: DivisionProps) => (props.isSelect ? "orange" : "blue")};
 	&:hover {
 		background: #339af0;
 	}
 	&:active {
-		background: #1c7ed6;
+		background: ;
 	}
 
 	/* 기타 */
@@ -36,44 +43,22 @@ const StyledButton = styled.button`
 	}
 `;
 
-const divisionList = [
-	"강남구",
-	"강동구",
-	"강북구",
-	"강서구",
-	"관악구",
-	"광진구",
-	"구로구",
-	"금천구",
-	"노원구",
-	"노원구",
-	"도봉구",
-	"동대문구",
-	"마포구",
-	"서대문구",
-	"서초구",
-	"성동구",
-	"성북구",
-	"송파구",
-	"양천구",
-	"영등포구",
-	"용산구",
-	"은평구",
-	"종로구",
-	"중구",
-	"중랑구",
-];
-
-function Button({ name }: DivisionProps) {
-	return <StyledButton>{name}</StyledButton>;
+function Button({ children }: IProps) {
+	return <StyledButton>{children}</StyledButton>;
 }
 
-function ButtonList() {
+function ButtonList({ divisionList }, { onToggle }: IProps) {
 	console.log(Button);
 	return (
 		<>
-			{divisionList.map((div) => (
-				<Button name={div}></Button>
+			{divisionList.map((div: DivisionProps) => (
+				<Button
+					name={div.name}
+					children={div.name}
+					isSelect={div.isSelect}
+					key={div.id}
+					onToggle={onToggle}
+				></Button>
 			))}
 		</>
 	);
