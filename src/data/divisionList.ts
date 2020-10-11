@@ -1,3 +1,8 @@
+import newData from "./newData";
+import * as d3 from "d3";
+
+const divGroupMap = d3.group(newData, (d) => d.division);
+
 const divisionArr = [
 	"강남구",
 	"강동구",
@@ -30,6 +35,11 @@ const divisionList = divisionArr.map((e: string, i: number) => {
 	const divisionObj = {
 		name: e,
 		id: i,
+		divC: divGroupMap.get(e)!.length,
+		bikeC: divGroupMap
+			.get(e)!
+			.map((data) => data.size)
+			.reduce((acc, cur) => acc + cur, 0),
 		isSelect: false,
 	};
 	return divisionObj;
