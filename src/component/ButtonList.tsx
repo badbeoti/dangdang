@@ -13,7 +13,6 @@ interface ISection extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const StyledButton: any = styled.button`
-	/* 공통 스타일 */
 	display: inline-flex;
 	outline: none;
 	border: none;
@@ -24,11 +23,9 @@ const StyledButton: any = styled.button`
 	padding-left: 1rem;
 	padding-right: 1rem;
 
-	/* 크기 */
 	height: 2.25rem;
 	font-size: 1rem;
 
-	/* 색상 */
 	background: ${(props: DivisionProps) => (props.isSelect ? "orange" : "blue")};
 	&:hover {
 		background: #339af0;
@@ -37,7 +34,6 @@ const StyledButton: any = styled.button`
 		background: ;
 	}
 
-	/* 기타 */
 	& + & {
 		margin-left: 1rem;
 	}
