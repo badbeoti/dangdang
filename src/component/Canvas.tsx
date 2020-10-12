@@ -1,32 +1,73 @@
 import React, { useEffect, useState, useRef } from "react";
+import styled from "styled-components";
+import divisionList from "../data/divisionList";
 import * as d3 from "d3";
 import {select, Selection} from 'd3-selection';
-import divisionList from "../data/divisionList";
 import { scaleLinear, scaleBand } from "d3";
-import {max} from 'd3-array'
+import { max } from 'd3-array'
+import { axisLeft, axisBottom } from 'd3-axis'
 
-function Canvas () {
+interface SelectList {
+  divisionList: { 
+    name: string;
+    id: number; 
+    isSelect: boolean;
+    divC: number;
+    bikeC: number; }[];
+}
+
+const canvas = {
+  width: 800,
+  height: 500,
+  chartWidth: 700,
+  chartHeight: 400,
+  marginLeft: 50,
+}
+
+const StyledCanvas: any = styled.section`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`
+
+function Canvas ({divisionList}: SelectList) {
+  // const selectList = divisionList.filter((div) => div.isSelect === true);
+  const [selectList, setList] = useState(divisionList)
   const ref = useRef(null);
   const [selection, setSelection] = useState<null | Selection<null, unknown, null, undefined>>(null);
+  console.log(selectList);
 
-  const maxValue = max(divisionList, d=>d.divC)
+  const maxValue = max(selectList, d=>d.divC)
   const y = scaleLinear()
               .domain([0,maxValue!])
-              .range([0,500])
+              .range([0,canvas.chartHeight])
 
   const x = scaleBand()
-              .domain(divisionList.map(d => d.name))
-              .range([0,1000])
+              .domain(selectList.map(d => d.name))
+              .range([0,canvas.chartWidth])
               .paddingInner(0.1)
-              .paddingOuter(0.3)
+
+  const yAxis = axisLeft(y)
+  const xAxis = axisBottom(x) 
 
   useEffect(()=> {
     if (!selection) {
       setSelection(select(ref.current))
     } else {
+      const xAxisGroup = selection.append('g')
+      .attr('transform', `translate(${canvas.marginLeft},${canvas.chartHeight})`)
+      .call(xAxis)
+      
+      const yAxisGroup = selection.append('g')
+      .attr('transform',`translate(${canvas.marginLeft},0)`)
+      .call(yAxis)
+
       selection
+        .append('g')
+        .attr('transform', `translate(${canvas.marginLeft},0)`)
         .selectAll('rect')
-        .data(divisionList)
+        .data(selectList)
         .enter()
         .append('rect')
         .attr('width', x.bandwidth)
@@ -36,11 +77,24 @@ function Canvas () {
     }
   },[selection]);
 
+  useEffect(()=>{
+    if (selection) {}
+  },[selectList])
+
+  const updatelist = () => {
+    setList(
+      selectList.filter((div) => (div.isSelect ? div : []))
+    )
+  }
+
   return (
-    <div>
-      <svg ref={ref} width={1000} height={500}>
+    <StyledCanvas>
+      <svg ref={ref} width={canvas.width} height={canvas.height}>
+        <g>
+          <rect></rect>
+        </g>
       </svg>
-    </div>
+    </StyledCanvas>
   )
 }
 
