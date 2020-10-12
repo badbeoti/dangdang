@@ -3,26 +3,32 @@ import divisionList from "../data/divisionList";
 import ButtonList from "./ButtonList";
 import Canvas from "./Canvas";
 
-console.log(divisionList)
+console.log(divisionList);
 
 function InputSection() {
 	const [arr, setArr] = useState(divisionList);
 
 	const onToggle = (key: number) => {
-		setArr(arr.map((div) => (div.id === key ? { ...div, isSelect: !div.isSelect } : div)));
+		setArr(
+			arr.map((div) =>
+				div.id === key ? { ...div, isSelect: !div.isSelect } : div
+			)
+		);
 	};
 
-	const onUpdate = () => {
-		setArr(arr.filter(div => div.isSelect === true))
-	}
+	const onReset = () => {
+		setArr(
+			arr.map((div) => (div.isSelect ? { ...div, isSelect: false } : div))
+		);
+	};
 
 	return (
 		<>
+			<section className={"CanvasSection"}>
+				<Canvas divisionList={arr} onReset={onReset}></Canvas>
+			</section>
 			<section className={"BtnSection"}>
 				<ButtonList divisionList={arr} onToggle={onToggle}></ButtonList>
-			</section>
-			<section className={"CanvasSection"}>
-				<Canvas divisionList={arr}></Canvas>
 			</section>
 		</>
 	);
