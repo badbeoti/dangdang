@@ -29,6 +29,8 @@ const StyledCanvas: any = styled.section`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
+  margin-top: 2rem;
 `
 
 function Canvas ({divisionList}: SelectList) {
@@ -38,30 +40,29 @@ function Canvas ({divisionList}: SelectList) {
   const [selection, setSelection] = useState<null | Selection<null, unknown, null, undefined>>(null);
   console.log(selectList);
 
-  const maxValue = max(selectList, d=>d.divC)
-  const y = scaleLinear()
-              .domain([0,maxValue!])
-              .range([0,canvas.chartHeight])
+  let y = scaleLinear()
+          .domain([0,max(selectList, d=>d.divC)!])
+          .range([canvas.height,0])
+        
+  let x = scaleBand()
+          .domain(selectList.map(d => d.name))
+          .range([0,canvas.chartWidth])
+          .paddingInner(0.1)
 
-  const x = scaleBand()
-              .domain(selectList.map(d => d.name))
-              .range([0,canvas.chartWidth])
-              .paddingInner(0.1)
-
-  const yAxis = axisLeft(y)
-  const xAxis = axisBottom(x) 
+  // const yAxis = axisLeft(y)
+  // const xAxis = axisBottom(x)
 
   useEffect(()=> {
     if (!selection) {
       setSelection(select(ref.current))
     } else {
-      const xAxisGroup = selection.append('g')
-      .attr('transform', `translate(${canvas.marginLeft},${canvas.chartHeight})`)
-      .call(xAxis)
+      // const xAxisGroup = selection.append('g')
+      // .attr('transform', `translate(${canvas.marginLeft},${canvas.chartHeight})`)
+      // .call(xAxis)
       
-      const yAxisGroup = selection.append('g')
-      .attr('transform',`translate(${canvas.marginLeft},0)`)
-      .call(yAxis)
+      // const yAxisGroup = selection.append('g')
+      // .attr('transform',`translate(${canvas.marginLeft},0)`)
+      // .call(yAxis)
 
       selection
         .append('g')
@@ -71,19 +72,54 @@ function Canvas ({divisionList}: SelectList) {
         .enter()
         .append('rect')
         .attr('width', x.bandwidth)
+        .attr('height', d=>canvas.height - y(d.divC))
         .attr('x', d => x(d.name)!)
+        .attr('y', d => y(d.divC)!)
         .attr('fill', 'blue')
-        .attr('height', d=>y(d.divC))
-    }
-  },[selection]);
 
-  useEffect(()=>{
-    if (selection) {}
+      }
+    },[selection]);
+    
+    useEffect(()=>{
+      if (selection) {
+        updatelist()
+
+        y = scaleLinear()
+          .domain([0,max(selectList, d=>d.divC)!])
+          .range([canvas.height,0])
+        
+        x = scaleBand()
+          .domain(selectList.map(d => d.name))
+          .range([0,canvas.chartWidth])
+          .paddingInner(0.1)
+
+        const rects = selection.selectAll('rect').data(selectList)
+
+        rects
+          .exit()
+          .remove()
+
+        rects
+          .attr('width', x.bandwidth)
+          .attr('height', d=>canvas.height - y(d.divC))
+          .attr('x', d => x(d.name)!)
+          .attr('y', d => y(d.divC)!)
+          .attr('fill', 'blue')
+
+        rects
+          .enter()
+          .append('rect')
+          .attr('width', x.bandwidth)
+          .attr('height', d=>canvas.height - y(d.divC))
+          .attr('x', d => x(d.name)!)
+          .attr('y', d => y(d.divC)!)
+          .attr('fill', 'blue')
+      }
   },[selectList])
 
   const updatelist = () => {
     setList(
-      selectList.filter((div) => (div.isSelect ? div : []))
+      selectList.filter((div) => (div.isSelect === true))
     )
   }
 
