@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import newData from "../data/newData";
 import divisionList from "../data/divisionList";
 import ButtonList from "./ButtonList";
 import * as d3 from "d3";
@@ -12,12 +11,10 @@ import * as d3 from "d3";
 // console.log(testFilter.get("강남구"));
 // console.log(testFilter.get("강남구")!.length);
 // console.log(gangnamSize);
+console.log(divisionList)
 
 function InputSection() {
 	const [arr, setArr] = useState(divisionList);
-	// const filteringData = arr.filter((div) => div.isSelect === true);
-	// const isCountData = useStationCountList(filteringData);
-	// console.log(isCountData);
 	useEffect(() => {
 		return () => {};
 	}, [arr]);
