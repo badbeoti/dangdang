@@ -12,6 +12,10 @@ function InputSection() {
 		setArr(arr.map((div) => (div.id === key ? { ...div, isSelect: !div.isSelect } : div)));
 	};
 
+	const onUpdate = () => {
+		setArr(arr.filter(div => div.isSelect === true))
+	}
+
 	return (
 		<>
 			<section className={"BtnSection"}>

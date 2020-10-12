@@ -40,6 +40,7 @@ const StyledButton: any = styled.button`
 `;
 
 function ButtonList({ divisionList, onToggle }: ISection) {
+	console.log(divisionList)
 	return (
 		<>
 			{divisionList.map((div: DivisionProps) => (

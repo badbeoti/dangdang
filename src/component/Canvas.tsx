@@ -14,6 +14,7 @@ interface SelectList {
     isSelect: boolean;
     divC: number;
     bikeC: number; }[];
+  // onUpdate: () => void;
 }
 
 const canvas = {
@@ -31,6 +32,12 @@ const StyledCanvas: any = styled.section`
   justify-content: center;
 
   margin-top: 2rem;
+`
+
+const ToggleBtn: any = styled.button`
+  width: 4rem;
+  height: 2rem;
+  background-color: orange;
 `
 
 function Canvas ({divisionList}: SelectList) {
@@ -65,10 +72,8 @@ function Canvas ({divisionList}: SelectList) {
       // .call(yAxis)
 
       selection
-        .append('g')
-        .attr('transform', `translate(${canvas.marginLeft},0)`)
         .selectAll('rect')
-        .data(selectList)
+        .data(divisionList)
         .enter()
         .append('rect')
         .attr('width', x.bandwidth)
@@ -76,14 +81,12 @@ function Canvas ({divisionList}: SelectList) {
         .attr('x', d => x(d.name)!)
         .attr('y', d => y(d.divC)!)
         .attr('fill', 'blue')
-
       }
     },[selection]);
     
     useEffect(()=>{
-      if (selection) {
-        updatelist()
-
+      if (divisionList.filter(div => div.isSelect === true).length > 1) {
+        console.log('done')
         y = scaleLinear()
           .domain([0,max(selectList, d=>d.divC)!])
           .range([canvas.height,0])
@@ -93,7 +96,7 @@ function Canvas ({divisionList}: SelectList) {
           .range([0,canvas.chartWidth])
           .paddingInner(0.1)
 
-        const rects = selection.selectAll('rect').data(selectList)
+        const rects = selection!.selectAll('rect').data(selectList)
 
         rects
           .exit()
@@ -119,17 +122,15 @@ function Canvas ({divisionList}: SelectList) {
 
   const updatelist = () => {
     setList(
-      selectList.filter((div) => (div.isSelect === true))
+      divisionList.filter(div => div.isSelect === true)
     )
   }
 
   return (
     <StyledCanvas>
       <svg ref={ref} width={canvas.width} height={canvas.height}>
-        <g>
-          <rect></rect>
-        </g>
       </svg>
+      <ToggleBtn onClick={() => updatelist()}>버튼</ToggleBtn>
     </StyledCanvas>
   )
 }
