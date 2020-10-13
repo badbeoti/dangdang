@@ -1,4 +1,5 @@
 import React, { ButtonHTMLAttributes } from "react";
+import divisionList from "../data/divisionList";
 import styled from "styled-components";
 
 interface DivisionProps {
@@ -39,19 +40,26 @@ const StyledButton: any = styled.button`
 	}
 `;
 
+const initialData = divisionList;
+
 function ButtonList({ divisionList, onToggle }: ISection) {
+	if (divisionList[0] !== initialData[0]) {
+	}
 	return (
 		<>
-			{divisionList.map((div: DivisionProps) => (
-				<StyledButton
-					name={div.name}
-					isSelect={div.isSelect}
-					key={div.id}
-					onClick={() => onToggle(div.id)}
-				>
-					{div.name}
-				</StyledButton>
-			))}
+			{/* after sort state check */}
+			{divisionList[0] !== initialData[0]
+				? initialData
+				: divisionList.map((div: DivisionProps) => (
+						<StyledButton
+							name={div.name}
+							isSelect={div.isSelect}
+							key={div.id}
+							onClick={() => onToggle(div.id)}
+						>
+							{div.name}
+						</StyledButton>
+				  ))}
 		</>
 	);
 }
