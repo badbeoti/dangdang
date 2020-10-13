@@ -3,9 +3,9 @@ import styled from "styled-components";
 import divisionList from "../data/divisionList";
 import * as d3 from "d3";
 import { select, Selection } from "d3-selection";
-import { scaleLinear, scaleBand } from "d3";
+import { scaleLinear, scaleBand, axisTop } from "d3";
 import { max } from "d3-array";
-import { axisLeft, axisBottom } from "d3-axis";
+import { axisLeft, axisBottom, axisRight } from "d3-axis";
 import effectFc from "../utils/effectFc";
 
 interface SelectList {
@@ -62,7 +62,8 @@ function Canvas({ divisionList, onReset }: SelectList) {
 	let x = scaleBand()
 		.domain(selectList.map((d) => d.name))
 		.range([0, canvas.chartWidth])
-		.paddingInner(0.05);
+		.paddingInner(0.1);
+	// .paddingOuter(0.9);
 
 	let y = scaleLinear()
 		.domain([0, max(selectList, (d) => d.divC)!])
@@ -81,10 +82,10 @@ function Canvas({ divisionList, onReset }: SelectList) {
 				.attr("transform", `translate(0,${canvas.chartHeight})`)
 				.call(axisBottom(x));
 
-			// const yAxisGroup = selection
-			// 	.append("g")
-			// 	.attr("transform", `translate(${canvas.chartWidth},0)`)
-			// 	.call(yAxis);
+			const yAxisGroup = selection
+				.append("g")
+				.attr("transform", `translate(${canvas.chartWidth},0)`)
+				.call(axisRight(y));
 
 			selection
 				.selectAll("rect")

@@ -5,7 +5,7 @@ import * as d3 from "d3";
 import { select, Selection } from "d3-selection";
 import { scaleLinear, scaleBand } from "d3";
 import { max } from "d3-array";
-import { axisLeft, axisBottom } from "d3-axis";
+import { axisLeft, axisBottom, axisRight } from "d3-axis";
 
 function effectFc(
 	selectList: {
@@ -43,6 +43,11 @@ function effectFc(
 		.append("g")
 		.attr("transform", `translate(0,${canvas.chartHeight})`)
 		.call(axisBottom(x));
+
+	const yAxisGroup = selection!
+		.append("g")
+		.attr("transform", `translate(${canvas.chartWidth},0)`)
+		.call(axisRight(y));
 
 	const rects = selection!.selectAll("rect").data(selectList);
 
