@@ -16,7 +16,9 @@ function InputSection() {
 
 	const onReset = () => {
 		setArr(
-			arr.map((div) => (div.isSelect ? { ...div, isSelect: false } : div))
+			arr
+				.sort((a, b) => (a.id > b.id ? 1 : -1))
+				.map((div) => (div.isSelect ? { ...div, isSelect: false } : div))
 		);
 	};
 

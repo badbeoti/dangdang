@@ -52,10 +52,13 @@ const ToggleBtn: any = styled.button`
 	margin-top: 1rem;
 `;
 
-const initialData = divisionList;
+const initialData = divisionList.sort((a, b) => (a.id > b.id ? 1 : -1));
 
 function Canvas({ divisionList, onReset }: SelectList) {
 	const [selectList, setList] = useState(divisionList);
+	const [reset, setReset] = useState({
+		initData: false,
+	});
 	const ref = useRef(null);
 	const [selection, setSelection] = useState<null | Selection<
 		null,
@@ -118,7 +121,10 @@ function Canvas({ divisionList, onReset }: SelectList) {
 	}, [selection]);
 
 	useEffect(() => {
-		if (divisionList.filter((div) => div.isSelect === true).length > 1) {
+		if (
+			divisionList.filter((div) => div.isSelect === true).length > 1 ||
+			reset.initData
+		) {
 			console.log(selectList);
 			x = scaleBand()
 				.domain(selectList.map((d) => d.name))
@@ -160,7 +166,12 @@ function Canvas({ divisionList, onReset }: SelectList) {
 	};
 
 	const resetList = () => {
-		setList(initialData);
+		// 왜 더블클릭 해야 작동하는지 모르겠다.
+		setReset({
+			initData: true,
+		});
+		setList(divisionList.sort((a, b) => (a.id > b.id ? 1 : -1)));
+		console.log(reset.initData);
 		setTimeout(onReset, 10);
 	};
 
