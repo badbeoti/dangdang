@@ -3,8 +3,6 @@ import divisionList from "../data/divisionList";
 import ButtonList from "./ButtonList";
 import Canvas from "./Canvas";
 
-console.log(divisionList);
-
 function InputSection() {
 	const [arr, setArr] = useState(divisionList);
 

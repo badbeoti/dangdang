@@ -76,9 +76,9 @@ function Canvas({ divisionList, onReset }: SelectList) {
 	const xAxis = axisBottom(x);
 	// const yAxis = axisLeft(y);
 
-	const color = scaleLinear()
-		.domain(selectList.map((d) => d.divC))
-		.range([0.8, 0.5]);
+	let color = scaleLinear()
+		.domain([0, max(selectList, (d) => d.divC)!])
+		.range([0.2, 0.8]);
 
 	useEffect(() => {
 		if (!selection) {
@@ -119,14 +119,19 @@ function Canvas({ divisionList, onReset }: SelectList) {
 
 	useEffect(() => {
 		if (divisionList.filter((div) => div.isSelect === true).length > 1) {
-			y = scaleLinear()
-				.domain([0, max(selectList, (d) => d.divC)!])
-				.range([canvas.height, 0]);
-
+			console.log(selectList);
 			x = scaleBand()
 				.domain(selectList.map((d) => d.name))
 				.range([0, canvas.chartWidth])
 				.paddingInner(0.1);
+
+			y = scaleLinear()
+				.domain([0, max(selectList, (d) => d.divC)!])
+				.range([canvas.chartHeight, 0]);
+
+			color = scaleLinear()
+				.domain([0, max(selectList, (d) => d.divC)!])
+				.range([0.2, 0.8]);
 
 			const rects = selection!.selectAll("rect").data(selectList);
 
@@ -134,19 +139,19 @@ function Canvas({ divisionList, onReset }: SelectList) {
 
 			rects
 				.attr("width", x.bandwidth)
-				.attr("height", (d) => canvas.height - y(d.divC))
+				.attr("height", (d) => canvas.chartHeight - y(d.divC) - 10)
 				.attr("x", (d) => x(d.name)!)
 				.attr("y", (d) => y(d.divC)!)
-				.attr("fill", "blue");
+				.attr("fill", (d) => d3.interpolateGreens(color(d.divC)));
 
 			rects
 				.enter()
 				.append("rect")
 				.attr("width", x.bandwidth)
-				.attr("height", (d) => canvas.height - y(d.divC))
+				.attr("height", (d) => canvas.chartHeight - y(d.divC) - 10)
 				.attr("x", (d) => x(d.name)!)
 				.attr("y", (d) => y(d.divC)!)
-				.attr("fill", "blue");
+				.attr("fill", (d) => d3.interpolateGreens(color(d.divC)));
 		}
 	}, [selectList]);
 
@@ -159,11 +164,56 @@ function Canvas({ divisionList, onReset }: SelectList) {
 		setTimeout(onReset, 10);
 	};
 
+	const sort = () => {
+		if (initialData === selectList) {
+			setList(initialData.sort((a, b) => (a.divC > b.divC ? 1 : -1)));
+		} else {
+			setList(selectList.sort((a, b) => (a.divC > b.divC ? 1 : -1)));
+		}
+		console.log(selectList);
+
+		x = scaleBand()
+			.domain(selectList.map((d) => d.name))
+			.range([0, canvas.chartWidth])
+			.paddingInner(0.1);
+
+		y = scaleLinear()
+			.domain([0, max(selectList, (d) => d.divC)!])
+			.range([canvas.chartHeight, 0]);
+
+		color = scaleLinear()
+			.domain([0, max(selectList, (d) => d.divC)!])
+			.range([0.2, 0.8]);
+
+		const rects = selection!.selectAll("rect").data(selectList);
+
+		// // rects.sort((a, b) => d3.ascending(a.divC, b.divC));
+
+		rects.exit().remove();
+
+		rects
+			.attr("width", x.bandwidth)
+			.attr("height", (d) => canvas.chartHeight - y(d.divC) - 10)
+			.attr("x", (d) => x(d.name)!)
+			.attr("y", (d) => y(d.divC)!)
+			.attr("fill", (d) => d3.interpolateGreens(color(d.divC)));
+
+		rects
+			.enter()
+			.append("rect")
+			.attr("width", x.bandwidth)
+			.attr("height", (d) => canvas.chartHeight - y(d.divC) - 10)
+			.attr("x", (d) => x(d.name)!)
+			.attr("y", (d) => y(d.divC)!)
+			.attr("fill", (d) => d3.interpolateGreens(color(d.divC)));
+	};
+
 	return (
 		<StyledCanvas>
 			<svg ref={ref} width={canvas.width} height={canvas.height}></svg>
 			<ToggleBtn onClick={() => updateList()}>Update Button</ToggleBtn>
 			<ToggleBtn onClick={() => resetList()}>Reset Button</ToggleBtn>
+			<ToggleBtn onClick={() => sort()}>Sort Button</ToggleBtn>
 		</StyledCanvas>
 	);
 }
