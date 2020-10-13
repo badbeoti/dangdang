@@ -80,6 +80,7 @@ function Canvas({ divisionList, onReset }: SelectList) {
 			const xAxisGroup = selection
 				.append("g")
 				.attr("transform", `translate(0,${canvas.chartHeight})`)
+				.attr("class", "xAxis")
 				.call(axisBottom(x));
 
 			const yAxisGroup = selection
@@ -98,22 +99,25 @@ function Canvas({ divisionList, onReset }: SelectList) {
 				.attr("y", (d) => y(d.divC)!)
 				.attr("fill", (d) => d3.interpolateGreens(color(d.divC)));
 
-			// selection
-			// 	.selectAll("text")
-			// 	.data(divisionList)
-			// 	.enter()
-			// 	.append("text")
-			// 	.text((d) => d.divC)
-			// 	.attr("x", (d) => x(d.name)! + 12)
-			// 	.attr("y", (d) => y(d.divC) + 20)
-			// 	.attr("fill", "white");
+			selection
+				.append("g")
+				.selectAll("text")
+				.data(divisionList)
+				.enter()
+				.append("text")
+				.text((d) => d.divC)
+				.attr("class", "text")
+				.attr("x", (d) => x(d.name)! + x.bandwidth() / 2)
+				.attr("y", (d) => y(d.divC) + 20)
+				.style("text-anchor", "middle")
+				.attr("fill", "white");
 		}
 	}, [selection]);
 
 	useEffect(() => {
 		if (
 			divisionList.filter((div) => div.isSelect === true).length > 1 ||
-			reset.initData
+			reset.initData === true
 		) {
 			effectFc(selectList, selection, canvas);
 		}
