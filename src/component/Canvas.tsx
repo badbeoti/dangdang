@@ -3,18 +3,9 @@ import styled from "styled-components";
 import divisionList from "../data/divisionList";
 import * as d3 from "d3";
 import { select, Selection } from "d3-selection";
-import {
-	scaleLinear,
-	scaleBand,
-	color,
-	interpolate,
-	interpolateRgb,
-	rgb,
-	interpolateGreens,
-} from "d3";
+import { scaleLinear, scaleBand } from "d3";
 import { max } from "d3-array";
 import { axisLeft, axisBottom } from "d3-axis";
-import { domain } from "process";
 
 interface SelectList {
 	divisionList: {
@@ -108,15 +99,15 @@ function Canvas({ divisionList, onReset }: SelectList) {
 				.attr("y", (d) => y(d.divC)!)
 				.attr("fill", (d) => d3.interpolateGreens(color(d.divC)));
 
-			selection
-				.selectAll("text")
-				.data(divisionList)
-				.enter()
-				.append("text")
-				.text((d) => d.divC)
-				.attr("x", (d) => x(d.name)! + 12)
-				.attr("y", (d) => y(d.divC) + 20)
-				.attr("fill", "white");
+			// selection
+			// 	.selectAll("text")
+			// 	.data(divisionList)
+			// 	.enter()
+			// 	.append("text")
+			// 	.text((d) => d.divC)
+			// 	.attr("x", (d) => x(d.name)! + 12)
+			// 	.attr("y", (d) => y(d.divC) + 20)
+			// 	.attr("fill", "white");
 		}
 	}, [selection]);
 
@@ -138,6 +129,13 @@ function Canvas({ divisionList, onReset }: SelectList) {
 			color = scaleLinear()
 				.domain([0, max(selectList, (d) => d.divC)!])
 				.range([0.2, 0.8]);
+
+			selection!.selectAll("g").remove();
+
+			const xAxisGroup = selection!
+				.append("g")
+				.attr("transform", `translate(0,${canvas.chartHeight})`)
+				.call(axisBottom(x));
 
 			const rects = selection!.selectAll("rect").data(selectList);
 
@@ -170,7 +168,10 @@ function Canvas({ divisionList, onReset }: SelectList) {
 		setReset({
 			initData: true,
 		});
-		setList(divisionList.sort((a, b) => (a.id > b.id ? 1 : -1)));
+		setTimeout(
+			setList(divisionList.sort((a, b) => (a.id > b.id ? 1 : -1))),
+			10
+		);
 		console.log(reset.initData);
 		setTimeout(onReset, 10);
 	};
@@ -196,9 +197,14 @@ function Canvas({ divisionList, onReset }: SelectList) {
 			.domain([0, max(selectList, (d) => d.divC)!])
 			.range([0.2, 0.8]);
 
-		const rects = selection!.selectAll("rect").data(selectList);
+		selection!.selectAll("g").remove();
 
-		// // rects.sort((a, b) => d3.ascending(a.divC, b.divC));
+		const xAxisGroup = selection!
+			.append("g")
+			.attr("transform", `translate(0,${canvas.chartHeight})`)
+			.call(axisBottom(x));
+
+		const rects = selection!.selectAll("rect").data(selectList);
 
 		rects.exit().remove();
 
