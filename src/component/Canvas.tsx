@@ -3,9 +3,18 @@ import styled from "styled-components";
 import divisionList from "../data/divisionList";
 import * as d3 from "d3";
 import { select, Selection } from "d3-selection";
-import { scaleLinear, scaleBand } from "d3";
+import {
+	scaleLinear,
+	scaleBand,
+	color,
+	interpolate,
+	interpolateRgb,
+	rgb,
+	interpolateGreens,
+} from "d3";
 import { max } from "d3-array";
 import { axisLeft, axisBottom } from "d3-axis";
+import { domain } from "process";
 
 interface SelectList {
 	divisionList: {
@@ -62,19 +71,23 @@ function Canvas({ divisionList, onReset }: SelectList) {
 
 	let y = scaleLinear()
 		.domain([0, max(selectList, (d) => d.divC)!])
-		.range([canvas.height, 0]);
+		.range([canvas.chartHeight, 0]);
 
-	// const xAxis = axisBottom(x);
+	const xAxis = axisBottom(x);
 	// const yAxis = axisLeft(y);
+
+	const color = scaleLinear()
+		.domain(selectList.map((d) => d.divC))
+		.range([0.8, 0.5]);
 
 	useEffect(() => {
 		if (!selection) {
 			setSelection(select(ref.current));
 		} else {
-			// const xAxisGroup = selection
-			// 	.append("g")
-			// 	.attr("transform", `translate(0,${canvas.chartHeight})`)
-			// 	.call(xAxis);
+			const xAxisGroup = selection
+				.append("g")
+				.attr("transform", `translate(0,${canvas.chartHeight})`)
+				.call(xAxis);
 
 			// const yAxisGroup = selection
 			// 	.append("g")
@@ -87,10 +100,10 @@ function Canvas({ divisionList, onReset }: SelectList) {
 				.enter()
 				.append("rect")
 				.attr("width", x.bandwidth)
-				.attr("height", (d) => canvas.chartHeight - y(d.divC))
+				.attr("height", (d) => canvas.chartHeight - y(d.divC) - 10)
 				.attr("x", (d) => x(d.name)!)
 				.attr("y", (d) => y(d.divC)!)
-				.attr("fill", "blue");
+				.attr("fill", (d) => d3.interpolateGreens(color(d.divC)));
 
 			selection
 				.selectAll("text")
