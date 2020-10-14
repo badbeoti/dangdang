@@ -1,7 +1,15 @@
 import React, { useState } from "react";
+import styled from "styled-components";
 import divisionList from "../data/divisionList";
 import ButtonList from "./ButtonList";
 import Canvas from "./Canvas";
+
+const InputBoard = styled.section`
+	display: grid;
+	grid-template-columns: 1fr;
+	grid-template-rows: 3fr 1fr;
+	width: 60%;
+`;
 
 function InputSection() {
 	const [arr, setArr] = useState(divisionList);
@@ -27,14 +35,14 @@ function InputSection() {
 	// reset 작업시에는 되돌리는 메소드와 select 돼 있을 경우 false로 되돌려 초기화한다.
 
 	return (
-		<>
+		<InputBoard>
 			<section className={"CanvasSection"}>
 				<Canvas divisionList={arr} onReset={onReset}></Canvas>
 			</section>
 			<section className={"BtnSection"}>
 				<ButtonList divisionList={arr} onToggle={onToggle}></ButtonList>
 			</section>
-		</>
+		</InputBoard>
 	);
 }
 

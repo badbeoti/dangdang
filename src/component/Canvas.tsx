@@ -3,9 +3,9 @@ import styled from "styled-components";
 import divisionList from "../data/divisionList";
 import * as d3 from "d3";
 import { select, Selection } from "d3-selection";
-import { scaleLinear, scaleBand, axisTop } from "d3";
+import { scaleLinear, scaleBand, easeElastic, easeBounce } from "d3";
 import { max } from "d3-array";
-import { axisLeft, axisBottom, axisRight } from "d3-axis";
+import { axisBottom, axisRight } from "d3-axis";
 import effectFc from "../utils/effectFc";
 
 interface SelectList {
@@ -36,6 +36,12 @@ const StyledCanvas: any = styled.section`
 	margin-top: 2rem;
 `;
 
+const BtnWrapper: any = styled.div`
+	display: flex;
+	flex-direction: row;
+	margin-bottom: 3rem;
+`;
+
 const ToggleBtn: any = styled.button`
 	width: 4rem;
 	height: 2rem;
@@ -48,9 +54,7 @@ const initialData = divisionList.sort((a, b) => (a.id > b.id ? 1 : -1));
 
 function Canvas({ divisionList, onReset }: SelectList) {
 	const [selectList, setList] = useState(divisionList);
-	const [reset, setReset] = useState({
-		initData: false,
-	});
+	const resetToggle = useRef(false);
 	const ref = useRef(null);
 	const [selection, setSelection] = useState<null | Selection<
 		null,
@@ -93,11 +97,17 @@ function Canvas({ divisionList, onReset }: SelectList) {
 				.data(divisionList)
 				.enter()
 				.append("rect")
+				.attr("fill", (d) => d3.interpolateGreens(color(d.divC)))
 				.attr("width", x.bandwidth)
-				.attr("height", (d) => canvas.chartHeight - y(d.divC) - 10)
 				.attr("x", (d) => x(d.name)!)
-				.attr("y", (d) => y(d.divC)!)
-				.attr("fill", (d) => d3.interpolateGreens(color(d.divC)));
+				.attr("height", 0)
+				.attr("y", canvas.chartHeight)
+				.transition()
+				.duration(1000)
+				.delay((_, i) => i * 100)
+				.ease(easeBounce)
+				.attr("height", (d) => canvas.chartHeight - y(d.divC) - 10)
+				.attr("y", (d) => y(d.divC)!);
 
 			selection
 				.append("g")
@@ -116,37 +126,30 @@ function Canvas({ divisionList, onReset }: SelectList) {
 	}, [selection]);
 
 	useEffect(() => {
+		resetToggle.current = false;
+	}, []);
+
+	useEffect(() => {
+		console.log(resetToggle.current);
 		if (
 			divisionList.filter((div) => div.isSelect === true).length > 1 ||
-			reset.initData === true
+			resetToggle.current === true
 		) {
 			effectFc(selectList, selection, canvas);
 		}
 	}, [selectList]);
-
-	useEffect(() => {
-		if (reset.initData) {
-			setReset({
-				initData: false,
-			});
-		}
-	}, [reset]);
-	// useEffect deps 값으로 [reset]을 넣어 초기 컴포넌트 useState의 비동기적 문제를 해결한다.
 
 	const updateList = () => {
 		setList(divisionList.filter((div) => div.isSelect === true));
 	};
 
 	const resetList = () => {
-		// 왜 더블클릭 해야 작동하는지 모르겠다.
-		setReset({
-			initData: true,
-		});
+		console.log(resetToggle.current);
+		resetToggle.current = true;
 		setTimeout(
 			setList(divisionList.sort((a, b) => (a.id > b.id ? 1 : -1))),
 			10
 		);
-		console.log(reset.initData);
 		setTimeout(onReset, 10);
 	};
 
@@ -162,9 +165,11 @@ function Canvas({ divisionList, onReset }: SelectList) {
 	return (
 		<StyledCanvas>
 			<svg ref={ref} width={canvas.width} height={canvas.height}></svg>
-			<ToggleBtn onClick={() => updateList()}>Update Button</ToggleBtn>
-			<ToggleBtn onClick={() => resetList()}>Reset Button</ToggleBtn>
-			<ToggleBtn onClick={() => sort()}>Sort Button</ToggleBtn>
+			<BtnWrapper>
+				<ToggleBtn onClick={() => updateList()}>Update Button</ToggleBtn>
+				<ToggleBtn onClick={() => resetList()}>Reset Button</ToggleBtn>
+				<ToggleBtn onClick={() => sort()}>Sort Button</ToggleBtn>
+			</BtnWrapper>
 		</StyledCanvas>
 	);
 }

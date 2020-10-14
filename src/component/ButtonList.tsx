@@ -22,13 +22,17 @@ const StyledButton: any = styled.button`
 	cursor: pointer;
 	padding-left: 1rem;
 	padding-right: 1rem;
+	padding-top: 0.4rem;
+
+	margin-bottom: 1rem;
 
 	height: 2.25rem;
 	font-size: 1rem;
 
-	background: ${(props: DivisionProps) => (props.isSelect ? "orange" : "blue")};
+	background: ${(props: DivisionProps) =>
+		props.isSelect ? "#218c74" : "#2ed573"};
 	&:hover {
-		background: #339af0;
+		background: #7bed9f;
 	}
 	&:active {
 		background: ;
@@ -39,16 +43,7 @@ const StyledButton: any = styled.button`
 	}
 `;
 
-// const initialData = divisionList as typeof divisionList;
-
 function ButtonList({ divisionList, onToggle }: ISection) {
-	// const [list, sortList] = useState(divisionList);
-	// console.log(initialData);
-	// if (list[0].id !== initialData[0].id) {
-	// 	divisionList.sort((a, b) => (a.id < b.id ? 1 : -1));
-	// 	console.log(list);
-	// }
-	/* after sort state check */
 	return (
 		<>
 			{divisionList.map((div: DivisionProps) => (
