@@ -124,6 +124,15 @@ function Canvas({ divisionList, onReset }: SelectList) {
 		}
 	}, [selectList]);
 
+	useEffect(() => {
+		if (reset.initData) {
+			setReset({
+				initData: false,
+			});
+		}
+	}, [reset]);
+	// useEffect deps 값으로 [reset]을 넣어 초기 컴포넌트 useState의 비동기적 문제를 해결한다.
+
 	const updateList = () => {
 		setList(divisionList.filter((div) => div.isSelect === true));
 	};
