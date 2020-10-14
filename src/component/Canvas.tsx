@@ -101,6 +101,7 @@ function Canvas({ divisionList, onReset }: SelectList) {
 
 			selection
 				.append("g")
+				.attr("class", "textGroup")
 				.selectAll("text")
 				.data(divisionList)
 				.enter()

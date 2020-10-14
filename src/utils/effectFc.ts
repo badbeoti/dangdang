@@ -49,21 +49,6 @@ function effectFc(
 		.attr("transform", `translate(${canvas.chartWidth},0)`)
 		.call(axisRight(y));
 
-	selection!.selectAll("text").selectAll(".text").remove();
-
-	selection!
-		.append("g")
-		.selectAll("text")
-		.data(selectList)
-		.enter()
-		.append("text")
-		.text((d) => d.divC)
-		.attr("class", "text")
-		.attr("x", (d) => x(d.name)! + x.bandwidth() / 2)
-		.attr("y", (d) => y(d.divC) + 20)
-		.style("text-anchor", "middle")
-		.attr("fill", "white");
-
 	const rects = selection!.selectAll("rect").data(selectList);
 
 	rects.exit().remove();
@@ -83,6 +68,32 @@ function effectFc(
 		.attr("x", (d) => x(d.name)!)
 		.attr("y", (d) => y(d.divC)!)
 		.attr("fill", (d) => d3.interpolateGreens(color(d.divC)));
+
+	const texts = selection!
+		.append("g")
+		.attr("class", "textGroup")
+		.selectAll("text")
+		.data(selectList);
+
+	texts.exit().remove();
+
+	texts
+		.text((d) => d.divC)
+		.attr("class", "text")
+		.attr("x", (d) => x(d.name)! + x.bandwidth() / 2)
+		.attr("y", (d) => y(d.divC) + 20)
+		.style("text-anchor", "middle")
+		.attr("fill", "white");
+
+	texts
+		.enter()
+		.append("text")
+		.text((d) => d.divC)
+		.attr("class", "text")
+		.attr("x", (d) => x(d.name)! + x.bandwidth() / 2)
+		.attr("y", (d) => y(d.divC) + 20)
+		.style("text-anchor", "middle")
+		.attr("fill", "white");
 }
 
 export default effectFc;
