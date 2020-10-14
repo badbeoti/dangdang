@@ -1627,6 +1627,11 @@
   resolved "https://registry.yarnpkg.com/@types/d3-ease/-/d3-ease-1.0.9.tgz#1dd849bd7edef6426e915e220ed9970db5ea4e04"
   integrity sha512-U5ADevQ+W6fy32FVZZC9EXallcV/Mi12A5Tkd0My5MrC7T8soMQEhlDAg88XUWm0zoCQlB4XV0en/24LvuDB4Q==
 
+"@types/d3-ease@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@types/d3-ease/-/d3-ease-2.0.0.tgz#798cbd9908d26cfe9f1a295a3a75164da9a3666e"
+  integrity sha512-6aZrTyX5LG+ptofVHf+gTsThLRY1nhLotJjgY4drYqk1OkJMu2UvuoZRlPw2fffjRHeYepue3/fxTufqKKmvsA==
+
 "@types/d3-fetch@*":
   version "1.1.5"
   resolved "https://registry.yarnpkg.com/@types/d3-fetch/-/d3-fetch-1.1.5.tgz#51601f79dd4653b5d84e6a3176d78145e065db5e"
@@ -1726,6 +1731,13 @@
   version "1.1.6"
   resolved "https://registry.yarnpkg.com/@types/d3-transition/-/d3-transition-1.1.6.tgz#7e52da29749d874866cc803fad13925713a372da"
   integrity sha512-/F+O2r4oz4G9ATIH3cuSCMGphAnl7VDx7SbENEK0NlI/FE8Jx2oiIrv0uTrpg7yF/AmuWbqp7AGdEHAPIh24Gg==
+  dependencies:
+    "@types/d3-selection" "*"
+
+"@types/d3-transition@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@types/d3-transition/-/d3-transition-2.0.0.tgz#6f073f0b567c13b7a3dcd1d54214c89f48c5a873"
+  integrity sha512-UJDzI98utcZQUJt3uIit/Ho0/eBIANzrWJrTmi4+TaKIyWL2iCu7ShP0o4QajCskhyjOA7C8+4CE3b1YirTzEQ==
   dependencies:
     "@types/d3-selection" "*"
 
@@ -3935,7 +3947,7 @@ d3-drag@2:
     iconv-lite "0.4"
     rw "1"
 
-"d3-ease@1 - 2", d3-ease@2:
+"d3-ease@1 - 2", d3-ease@2, d3-ease@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/d3-ease/-/d3-ease-2.0.0.tgz#fd1762bfca00dae4bacea504b1d628ff290ac563"
   integrity sha512-68/n9JWarxXkOWMshcT5IcjbB+agblQUaIsbnXmrzejn2O82n3p2A9R2zEB9HIEFWKFwPAEDDN8gR0VdSAyyAQ==
@@ -4048,7 +4060,7 @@ d3-shape@2:
   resolved "https://registry.yarnpkg.com/d3-timer/-/d3-timer-2.0.0.tgz#055edb1d170cfe31ab2da8968deee940b56623e6"
   integrity sha512-TO4VLh0/420Y/9dO3+f9abDEFYeCUr2WZRlxJvbp4HPTQcSylXNiL6yZa9FIUvV1yRiFufl1bszTCLDqv9PWNA==
 
-d3-transition@2:
+d3-transition@2, d3-transition@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/d3-transition/-/d3-transition-2.0.0.tgz#366ef70c22ef88d1e34105f507516991a291c94c"
   integrity sha512-42ltAGgJesfQE3u9LuuBHNbGrI/AJjNL2OAUdclE70UE6Vy239GCBEYD38uBPoLeNsOhFStGpPI0BAOV+HMxog==
