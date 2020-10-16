@@ -41,6 +41,7 @@ function effectFc(
 
 	const xAxisGroup = selection!
 		.append("g")
+		.attr("font-weight", "bold")
 		.attr("transform", `translate(0,${canvas.chartHeight})`)
 		.call(axisBottom(x));
 

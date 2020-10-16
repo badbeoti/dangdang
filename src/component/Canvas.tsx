@@ -94,6 +94,7 @@ function Canvas({ divisionList, onReset }: SelectList) {
 		} else {
 			const xAxisGroup = selection
 				.append("g")
+				.attr("font-weight", "bold")
 				.attr("transform", `translate(0,${canvas.chartHeight})`)
 				.attr("class", "xAxis")
 				.call(axisBottom(x));
