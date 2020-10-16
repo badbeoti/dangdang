@@ -3,7 +3,7 @@
 // import divisionList from "../data/divisionList";
 import * as d3 from "d3";
 import { select, Selection } from "d3-selection";
-import { scaleLinear, scaleBand } from "d3";
+import { scaleLinear, scaleBand, easeBounce, easeCircleOut } from "d3";
 import { max } from "d3-array";
 import { axisLeft, axisBottom, axisRight } from "d3-axis";
 
@@ -55,19 +55,31 @@ function effectFc(
 
 	rects
 		.attr("width", x.bandwidth)
-		.attr("height", (d) => canvas.chartHeight - y(d.divC) - 10)
 		.attr("x", (d) => x(d.name)!)
-		.attr("y", (d) => y(d.divC)!)
-		.attr("fill", (d) => d3.interpolateGreens(color(d.divC)));
+		.attr("fill", (d) => d3.interpolateGreens(color(d.divC)))
+		.attr("height", 0)
+		.attr("y", canvas.chartHeight)
+		.transition()
+		.duration(1000)
+		.delay((_, i) => i * 100)
+		.ease(easeCircleOut)
+		.attr("height", (d) => canvas.chartHeight - y(d.divC) - 10)
+		.attr("y", (d) => y(d.divC)!);
 
 	rects
 		.enter()
 		.append("rect")
 		.attr("width", x.bandwidth)
-		.attr("height", (d) => canvas.chartHeight - y(d.divC) - 10)
 		.attr("x", (d) => x(d.name)!)
-		.attr("y", (d) => y(d.divC)!)
-		.attr("fill", (d) => d3.interpolateGreens(color(d.divC)));
+		.attr("fill", (d) => d3.interpolateGreens(color(d.divC)))
+		.attr("height", 0)
+		.attr("y", canvas.chartHeight)
+		.transition()
+		.duration(1000)
+		.delay((_, i) => i * 100)
+		.ease(easeCircleOut)
+		.attr("height", (d) => canvas.chartHeight - y(d.divC) - 10)
+		.attr("y", (d) => y(d.divC)!);
 
 	const texts = selection!
 		.append("g")
@@ -80,20 +92,32 @@ function effectFc(
 	texts
 		.text((d) => d.divC)
 		.attr("class", "text")
+		.attr("fill", "white")
+		.style("font-weight", "bold")
 		.attr("x", (d) => x(d.name)! + x.bandwidth() / 2)
+		.attr("y", canvas.chartHeight)
+		.transition()
+		.duration(1000)
+		.delay((_, i) => i * 100)
+		.ease(easeCircleOut)
 		.attr("y", (d) => y(d.divC) + 20)
-		.style("text-anchor", "middle")
-		.attr("fill", "white");
+		.style("text-anchor", "middle");
 
 	texts
 		.enter()
 		.append("text")
 		.text((d) => d.divC)
 		.attr("class", "text")
+		.attr("fill", "white")
+		.style("font-weight", "bold")
 		.attr("x", (d) => x(d.name)! + x.bandwidth() / 2)
+		.attr("y", canvas.chartHeight)
+		.transition()
+		.duration(1000)
+		.delay((_, i) => i * 100)
+		.ease(easeCircleOut)
 		.attr("y", (d) => y(d.divC) + 20)
-		.style("text-anchor", "middle")
-		.attr("fill", "white");
+		.style("text-anchor", "middle");
 }
 
 export default effectFc;

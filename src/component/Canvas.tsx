@@ -1,9 +1,15 @@
 import React, { useEffect, useState, useRef } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import divisionList from "../data/divisionList";
 import * as d3 from "d3";
 import { select, Selection } from "d3-selection";
-import { scaleLinear, scaleBand, easeElastic, easeBounce } from "d3";
+import {
+	scaleLinear,
+	scaleBand,
+	easeElastic,
+	easeBounce,
+	easeCircleOut,
+} from "d3";
 import { max } from "d3-array";
 import { axisBottom, axisRight } from "d3-axis";
 import effectFc from "../utils/effectFc";
@@ -22,7 +28,7 @@ interface SelectList {
 const canvas = {
 	width: 1200,
 	height: 500,
-	chartWidth: 1100,
+	chartWidth: 1175,
 	chartHeight: 400,
 	marginLeft: 100,
 };
@@ -33,28 +39,33 @@ const StyledCanvas: any = styled.section`
 	align-items: center;
 	justify-content: center;
 
-	margin-top: 2rem;
+	margin-top: 4rem;
 `;
 
 const BtnWrapper: any = styled.div`
 	display: flex;
+	width: 80%;
+	justify-content: space-around;
 	flex-direction: row;
 	margin-bottom: 3rem;
 `;
 
 const ToggleBtn: any = styled.button`
-	width: 4rem;
-	height: 2rem;
-	background-color: orange;
-
-	margin-top: 1rem;
+	width: 12rem;
+	height: 3rem;
+	font-size: 1rem;
+	vertical-align: middle;
+	background-color: white;
+	color: #009432;
+	font-weight: 700;
+	border: medium solid #009432;
+	border-radius: 1rem;
 `;
 
 const initialData = divisionList.sort((a, b) => (a.id > b.id ? 1 : -1));
 
 function Canvas({ divisionList, onReset }: SelectList) {
 	const [selectList, setList] = useState(divisionList);
-	const resetToggle = useRef(false);
 	const ref = useRef(null);
 	const [selection, setSelection] = useState<null | Selection<
 		null,
@@ -98,14 +109,16 @@ function Canvas({ divisionList, onReset }: SelectList) {
 				.enter()
 				.append("rect")
 				.attr("fill", (d) => d3.interpolateGreens(color(d.divC)))
+
 				.attr("width", x.bandwidth)
 				.attr("x", (d) => x(d.name)!)
+
 				.attr("height", 0)
 				.attr("y", canvas.chartHeight)
 				.transition()
 				.duration(1000)
 				.delay((_, i) => i * 100)
-				.ease(easeBounce)
+				.ease(easeCircleOut)
 				.attr("height", (d) => canvas.chartHeight - y(d.divC) - 10)
 				.attr("y", (d) => y(d.divC)!);
 
@@ -118,23 +131,24 @@ function Canvas({ divisionList, onReset }: SelectList) {
 				.append("text")
 				.text((d) => d.divC)
 				.attr("class", "text")
+				.attr("fill", "white")
 				.attr("x", (d) => x(d.name)! + x.bandwidth() / 2)
+
+				.attr("y", canvas.chartHeight)
+				.transition()
+				.duration(1000)
+				.delay((_, i) => i * 100)
+				.ease(easeCircleOut)
 				.attr("y", (d) => y(d.divC) + 20)
 				.style("text-anchor", "middle")
-				.attr("fill", "white");
+				.style("font-weight", "bold");
 		}
 	}, [selection]);
 
-	useEffect(() => {
-		resetToggle.current = false;
-	}, []);
+	useEffect(() => {}, []);
 
 	useEffect(() => {
-		console.log(resetToggle.current);
-		if (
-			divisionList.filter((div) => div.isSelect === true).length > 1 ||
-			resetToggle.current === true
-		) {
+		if (divisionList.filter((div) => div.isSelect === true).length > 1) {
 			effectFc(selectList, selection, canvas);
 		}
 	}, [selectList]);
@@ -144,13 +158,12 @@ function Canvas({ divisionList, onReset }: SelectList) {
 	};
 
 	const resetList = () => {
-		console.log(resetToggle.current);
-		resetToggle.current = true;
-		setTimeout(
-			setList(divisionList.sort((a, b) => (a.id > b.id ? 1 : -1))),
-			10
-		);
-		setTimeout(onReset, 10);
+		setList(initialData.sort((a, b) => (a.id > b.id ? 1 : -1)));
+		console.log(initialData);
+		effectFc(initialData, selection, canvas);
+		// 초기화면에서 정렬과 초기화가 안되는 부분을 그냥 resetList 함수에서도 effectFc를 실행시켜
+		// 해결하기로 했다.
+		onReset();
 	};
 
 	const sort = () => {

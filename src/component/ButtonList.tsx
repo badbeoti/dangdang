@@ -13,20 +13,16 @@ interface ISection extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const StyledButton: any = styled.button`
-	display: inline-flex;
+	display: inline-block;
 	outline: none;
 	border: none;
 	border-radius: 4px;
 	color: white;
-	font-weight: bold;
+	font-weight: 800;
 	cursor: pointer;
 	padding-left: 1rem;
 	padding-right: 1rem;
-	padding-top: 0.4rem;
 
-	margin-bottom: 1rem;
-
-	height: 2.25rem;
 	font-size: 1rem;
 
 	background: ${(props: DivisionProps) =>
@@ -37,16 +33,13 @@ const StyledButton: any = styled.button`
 	&:active {
 		background: ;
 	}
-
-	& + & {
-		margin-left: 1rem;
-	}
 `;
 
 function ButtonList({ divisionList, onToggle }: ISection) {
+	const initialList = divisionList.sort((a, b) => (a.id > b.id ? 1 : -1));
 	return (
 		<>
-			{divisionList.map((div: DivisionProps) => (
+			{initialList.map((div: DivisionProps) => (
 				<StyledButton
 					name={div.name}
 					isSelect={div.isSelect}

@@ -7,9 +7,23 @@ import Canvas from "./Canvas";
 const InputBoard = styled.section`
 	display: grid;
 	grid-template-columns: 1fr;
-	grid-template-rows: 3fr 1fr;
-	width: 60%;
+	grid-template-rows: 6fr 3fr 1fr;
+	justify-content: center;
 `;
+
+const CanvasSection = styled.section`
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+`;
+
+const BtnSection = styled.section`
+	display: grid;
+	grid-template-columns: repeat(5, 1fr);
+	grid-gap: 8px;
+`;
+// grid-template-columns: repeat(auto-fit, minmax(150px, 1fr);
 
 function InputSection() {
 	const [arr, setArr] = useState(divisionList);
@@ -36,12 +50,12 @@ function InputSection() {
 
 	return (
 		<InputBoard>
-			<section className={"CanvasSection"}>
+			<CanvasSection>
 				<Canvas divisionList={arr} onReset={onReset}></Canvas>
-			</section>
-			<section className={"BtnSection"}>
+			</CanvasSection>
+			<BtnSection>
 				<ButtonList divisionList={arr} onToggle={onToggle}></ButtonList>
-			</section>
+			</BtnSection>
 		</InputBoard>
 	);
 }

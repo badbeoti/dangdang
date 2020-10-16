@@ -5,7 +5,6 @@ import styled from "styled-components";
 
 const Root: any = styled.body`
 	display: flex;
-	align-items: center;
 	justify-content: center;
 	width: 100%;
 	height: 100vh;
