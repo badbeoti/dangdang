@@ -1,5 +1,4 @@
-import React, { ButtonHTMLAttributes, useState } from "react";
-import divisionList from "../data/divisionList";
+import React, { ButtonHTMLAttributes } from "react";
 import styled from "styled-components";
 interface DivisionProps {
 	name: string;
@@ -29,9 +28,6 @@ const StyledButton: any = styled.button`
 		props.isSelect ? "#218c74" : "#2ed573"};
 	&:hover {
 		background: #7bed9f;
-	}
-	&:active {
-		background: ;
 	}
 `;
 
