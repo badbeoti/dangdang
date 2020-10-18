@@ -1,22 +1,23 @@
 {
   "files": {
     "main.css": "/dangdang/static/css/main.22de92b1.chunk.css",
-    "main.js": "/dangdang/static/js/main.6d893e91.chunk.js",
-    "main.js.map": "/dangdang/static/js/main.6d893e91.chunk.js.map",
+    "main.js": "/dangdang/static/js/main.16d82305.chunk.js",
+    "main.js.map": "/dangdang/static/js/main.16d82305.chunk.js.map",
     "runtime-main.js": "/dangdang/static/js/runtime-main.4e685409.js",
     "runtime-main.js.map": "/dangdang/static/js/runtime-main.4e685409.js.map",
-    "static/js/2.7619ad7e.chunk.js": "/dangdang/static/js/2.7619ad7e.chunk.js",
-    "static/js/2.7619ad7e.chunk.js.map": "/dangdang/static/js/2.7619ad7e.chunk.js.map",
+    "static/js/2.e8b34b3c.chunk.js": "/dangdang/static/js/2.e8b34b3c.chunk.js",
+    "static/js/2.e8b34b3c.chunk.js.map": "/dangdang/static/js/2.e8b34b3c.chunk.js.map",
     "index.html": "/dangdang/index.html",
-    "precache-manifest.673dbe88f9973a1c9fa63d47739c5112.js": "/dangdang/precache-manifest.673dbe88f9973a1c9fa63d47739c5112.js",
+    "precache-manifest.be4f6161615ba101595f6e1b703dcde0.js": "/dangdang/precache-manifest.be4f6161615ba101595f6e1b703dcde0.js",
     "service-worker.js": "/dangdang/service-worker.js",
     "static/css/main.22de92b1.chunk.css.map": "/dangdang/static/css/main.22de92b1.chunk.css.map",
-    "static/js/2.7619ad7e.chunk.js.LICENSE.txt": "/dangdang/static/js/2.7619ad7e.chunk.js.LICENSE.txt"
+    "static/js/2.e8b34b3c.chunk.js.LICENSE.txt": "/dangdang/static/js/2.e8b34b3c.chunk.js.LICENSE.txt",
+    "static/media/Logo.png": "/dangdang/static/media/Logo.3fc22374.png"
   },
   "entrypoints": [
     "static/js/runtime-main.4e685409.js",
-    "static/js/2.7619ad7e.chunk.js",
+    "static/js/2.e8b34b3c.chunk.js",
     "static/css/main.22de92b1.chunk.css",
-    "static/js/main.6d893e91.chunk.js"
+    "static/js/main.16d82305.chunk.js"
   ]
 }
