@@ -55,10 +55,14 @@ const ToggleBtn: any = styled.button`
 	height: 3rem;
 	font-size: 1rem;
 	vertical-align: middle;
-	background-color: white;
-	color: #009432;
+	cursor: pointer;
+	background-color: #078c2b;
+	&:hover {
+		background-color: #7bed9f;
+	}
+	color: white;
 	font-weight: 700;
-	border: medium solid #009432;
+	border: medium solid #7bed9f;
 	border-radius: 1rem;
 `;
 
@@ -78,7 +82,6 @@ function Canvas({ divisionList, onReset }: SelectList) {
 		.domain(selectList.map((d) => d.name))
 		.range([0, canvas.chartWidth])
 		.paddingInner(0.1);
-	// .paddingOuter(0.9);
 
 	let y = scaleLinear()
 		.domain([0, max(selectList, (d) => d.divC)!])
@@ -132,7 +135,7 @@ function Canvas({ divisionList, onReset }: SelectList) {
 				.append("text")
 				.text((d) => d.divC)
 				.attr("class", "text")
-				.attr("fill", "white")
+				.attr("fill", "#f5f6fa")
 				.attr("x", (d) => x(d.name)! + x.bandwidth() / 2)
 
 				.attr("y", canvas.chartHeight)
@@ -145,8 +148,6 @@ function Canvas({ divisionList, onReset }: SelectList) {
 				.style("font-weight", "bold");
 		}
 	}, [selection]);
-
-	useEffect(() => {}, []);
 
 	useEffect(() => {
 		if (divisionList.filter((div) => div.isSelect === true).length > 1) {
@@ -180,6 +181,9 @@ function Canvas({ divisionList, onReset }: SelectList) {
 		<StyledCanvas>
 			<svg ref={ref} width={canvas.width} height={canvas.height}></svg>
 			<BtnWrapper>
+				<ToggleBtn onClick={() => updateList()}>
+					단위 변경 [거치대 수]
+				</ToggleBtn>
 				<ToggleBtn onClick={() => updateList()}>Update Button</ToggleBtn>
 				<ToggleBtn onClick={() => resetList()}>Reset Button</ToggleBtn>
 				<ToggleBtn onClick={() => sort()}>Sort Button</ToggleBtn>

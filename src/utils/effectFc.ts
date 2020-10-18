@@ -93,7 +93,7 @@ function effectFc(
 	texts
 		.text((d) => d.divC)
 		.attr("class", "text")
-		.attr("fill", "white")
+		.attr("fill", "#f5f6fa")
 		.style("font-weight", "bold")
 		.attr("x", (d) => x(d.name)! + x.bandwidth() / 2)
 		.attr("y", canvas.chartHeight)
@@ -109,7 +109,7 @@ function effectFc(
 		.append("text")
 		.text((d) => d.divC)
 		.attr("class", "text")
-		.attr("fill", "white")
+		.attr("fill", "#f5f6fa")
 		.style("font-weight", "bold")
 		.attr("x", (d) => x(d.name)! + x.bandwidth() / 2)
 		.attr("y", canvas.chartHeight)
