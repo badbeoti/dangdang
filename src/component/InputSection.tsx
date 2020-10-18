@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import divisionList from "../data/divisionList";
 import ButtonList from "./ButtonList";
@@ -29,6 +29,24 @@ function InputSection() {
 	const [arr, setArr] = useState(divisionList);
 	// 미리 가공된 data를 useState로 담는다.
 
+	const [axis, setAxis] = useState({
+		changeAxis: false,
+	});
+
+	// useEffect(() => {
+	// 	setAxis({
+	// 		changeAxis: false,
+	// 	});
+	// });
+
+	console.log(axis.changeAxis);
+
+	const onSetAxis = () => {
+		setAxis({
+			changeAxis: !axis.changeAxis,
+		});
+	};
+
 	const onToggle = (key: number) => {
 		setArr(
 			arr.map((div) =>
@@ -51,7 +69,12 @@ function InputSection() {
 	return (
 		<InputBoard>
 			<CanvasSection>
-				<Canvas divisionList={arr} onReset={onReset}></Canvas>
+				<Canvas
+					divisionList={arr}
+					onReset={onReset}
+					axis={axis}
+					onSetAxis={onSetAxis}
+				></Canvas>
 			</CanvasSection>
 			<BtnSection>
 				<ButtonList divisionList={arr} onToggle={onToggle}></ButtonList>
