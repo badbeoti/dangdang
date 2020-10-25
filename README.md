@@ -32,4 +32,4 @@ CRA로 프로젝트를 구성하고, 배포는 gh-pages로 작업했습니다.
 
 #### d3-scale-chromatic
 
-#### d3.easeCircleOut
+#### d3.transition
