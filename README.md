@@ -1,5 +1,13 @@
 # 서울특별시 공공데이터와 D3.js를 활용한 반응형 차트
 
+![](https://media.vlpt.us/images/badbeoti/post/142452ce-e8e6-47d1-b1e4-5b7cc96df352/project-capture-dangdang.png)
+
+### 정리글
+
+[[D3.js, React] 반응형 그래프 차트](https://velog.io/@badbeoti/D3.js-React-%EB%B0%98%EC%9D%91%ED%98%95-%EA%B7%B8%EB%9E%98%ED%94%84-%EC%B0%A8%ED%8A%B8)
+
+[[D3.js] selection부터 transition까지-1](https://velog.io/@badbeoti/D3.js-selection%EB%B6%80%ED%84%B0-transition%EA%B9%8C%EC%A7%80-1)
+
 ## 사용 스펙
 
 - D3.js
@@ -20,7 +28,7 @@ Reset이나 Update 버튼을 통하여 보고싶은 구만을 지정할 수 있�
 React Hooks를 사용하고, 스타일은 styled-components로 제작했습니다.
 CRA로 프로젝트를 구성하고, 배포는 gh-pages로 작업했습니다.
 
-## 주로 사용한 D3.js API
+## D3.js API
 
 #### d3.axisBottom, d3.axisRight
 
