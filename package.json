@@ -48,9 +48,11 @@
 		]
 	},
 	"devDependencies": {
+		"@types/axios": "^0.14.0",
 		"@types/react": "^16.9.49",
 		"@types/react-dom": "^16.9.8",
 		"@types/styled-components": "^5.1.3",
+		"axios": "^0.21.0",
 		"gh-pages": "^3.1.0"
 	},
 	"homepage": "https://badbeoti.github.io/dangdang/"
