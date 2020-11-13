@@ -40,18 +40,21 @@ function effectFc(
 		.domain([0, max(selectList, (d) => (axis.changeAxis ? d.bikeC : d.divC))!])
 		.range([0.2, 0.8]);
 
+	const xAxisBot = d3.axisBottom(x);
+	const yAxisRight = d3.axisRight(y);
+
 	selection!.selectAll("g").remove();
 
 	const xAxisGroup = selection!
 		.append("g")
 		.attr("font-weight", "bold")
 		.attr("transform", `translate(0,${canvas.chartHeight})`)
-		.call(axisBottom(x));
+		.call(xAxisBot);
 
 	const yAxisGroup = selection!
 		.append("g")
 		.attr("transform", `translate(${canvas.chartWidth},0)`)
-		.call(axisRight(y));
+		.call(yAxisRight);
 
 	const rects = selection!.selectAll("rect").data(selectList);
 
@@ -62,8 +65,8 @@ function effectFc(
 		.attr("x", (d) => x(d.name)!)
 		.attr("fill", (d) =>
 			axis.changeAxis
-				? d3.interpolateGreens(color(d.bikeC))
-				: d3.interpolateGreens(color(d.divC))
+				? d3.interpolateGreens(color(d.bikeC)!)
+				: d3.interpolateGreens(color(d.divC)!)
 		)
 		.attr("height", 0)
 		.attr("y", canvas.chartHeight)
@@ -73,7 +76,7 @@ function effectFc(
 		.ease(easeCircleOut)
 		.attr(
 			"height",
-			(d) => canvas.chartHeight - y(axis.changeAxis ? d.bikeC : d.divC) - 10
+			(d) => canvas.chartHeight - y(axis.changeAxis ? d.bikeC : d.divC)! - 10
 		)
 		.attr("y", (d) => y(axis.changeAxis ? d.bikeC : d.divC)!);
 
@@ -84,8 +87,8 @@ function effectFc(
 		.attr("x", (d) => x(d.name)!)
 		.attr("fill", (d) =>
 			axis.changeAxis
-				? d3.interpolateGreens(color(d.bikeC))
-				: d3.interpolateGreens(color(d.divC))
+				? d3.interpolateGreens(color(d.bikeC)!)
+				: d3.interpolateGreens(color(d.divC)!)
 		)
 		.attr("height", 0)
 		.attr("y", canvas.chartHeight)
@@ -95,7 +98,7 @@ function effectFc(
 		.ease(easeCircleOut)
 		.attr(
 			"height",
-			(d) => canvas.chartHeight - y(axis.changeAxis ? d.bikeC : d.divC) - 10
+			(d) => canvas.chartHeight - y(axis.changeAxis ? d.bikeC : d.divC)! - 10
 		)
 		.attr("y", (d) => y(axis.changeAxis ? d.bikeC : d.divC)!);
 
@@ -118,7 +121,7 @@ function effectFc(
 		.duration(1000)
 		.delay((_, i) => i * 100)
 		.ease(easeCircleOut)
-		.attr("y", (d) => y(axis.changeAxis ? d.bikeC : d.divC) + 20)
+		.attr("y", (d) => y(axis.changeAxis ? d.bikeC : d.divC)! + 20)
 		.style("text-anchor", "middle");
 
 	texts
@@ -134,7 +137,7 @@ function effectFc(
 		.duration(1000)
 		.delay((_, i) => i * 100)
 		.ease(easeCircleOut)
-		.attr("y", (d) => y(axis.changeAxis ? d.bikeC : d.divC) + 20)
+		.attr("y", (d) => y(axis.changeAxis ? d.bikeC : d.divC)! + 20)
 		.style("text-anchor", "middle");
 }
 

@@ -29,6 +29,10 @@ interface SelectList {
 	onSetAxis: () => void;
 }
 
+interface Axis {
+	axis: (selection: Selection<SVGGElement, unknown, null, undefined>) => void;
+}
+
 const canvas = {
 	width: 1200,
 	height: 500,
@@ -95,6 +99,9 @@ function Canvas({ divisionList, onReset, axis, onSetAxis }: SelectList) {
 		.domain([0, max(selectList, (d) => (axis.changeAxis ? d.bikeC : d.divC))!])
 		.range([0.2, 0.8]);
 
+	const xAxisBot = d3.axisBottom(x);
+	const yAxisRight = d3.axisRight(y);
+
 	useEffect(() => {
 		if (!selection) {
 			setSelection(select(ref.current));
@@ -104,12 +111,12 @@ function Canvas({ divisionList, onReset, axis, onSetAxis }: SelectList) {
 				.attr("font-weight", "bold")
 				.attr("transform", `translate(0,${canvas.chartHeight})`)
 				.attr("class", "xAxis")
-				.call(axisBottom(x));
+				.call(xAxisBot);
 
 			const yAxisGroup = selection
 				.append("g")
 				.attr("transform", `translate(${canvas.chartWidth},0)`)
-				.call(axisRight(y));
+				.call(yAxisRight);
 
 			selection
 				.selectAll("rect")
@@ -119,8 +126,8 @@ function Canvas({ divisionList, onReset, axis, onSetAxis }: SelectList) {
 				// .attr("fill", (d) => d3.interpolateGreens(color(d.divC)))
 				.attr("fill", (d) =>
 					axis.changeAxis
-						? d3.interpolateGreens(color(d.bikeC))
-						: d3.interpolateGreens(color(d.divC))
+						? d3.interpolateGreens(color(d.bikeC)!)
+						: d3.interpolateGreens(color(d.divC)!)
 				)
 
 				.attr("width", x.bandwidth)
@@ -134,7 +141,8 @@ function Canvas({ divisionList, onReset, axis, onSetAxis }: SelectList) {
 				.ease(easeCircleOut)
 				.attr(
 					"height",
-					(d) => canvas.chartHeight - y(axis.changeAxis ? d.bikeC : d.divC) - 10
+					(d) =>
+						canvas.chartHeight - y(axis.changeAxis ? d.bikeC : d.divC)! - 10
 				)
 				.attr("y", (d) => y(axis.changeAxis ? d.bikeC : d.divC)!);
 
@@ -155,7 +163,7 @@ function Canvas({ divisionList, onReset, axis, onSetAxis }: SelectList) {
 				.duration(1000)
 				.delay((_, i) => i * 100)
 				.ease(easeCircleOut)
-				.attr("y", (d) => y(axis.changeAxis ? d.bikeC : d.divC) + 20)
+				.attr("y", (d) => y(axis.changeAxis ? d.bikeC : d.divC)! + 20)
 				.style("text-anchor", "middle")
 				.style("font-weight", "bold");
 		}
