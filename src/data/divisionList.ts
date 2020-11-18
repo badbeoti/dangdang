@@ -1,5 +1,51 @@
-import newData from "./newData";
+// import newData from "./newData";
 import * as d3 from "d3";
+import axios from "axios";
+
+interface DataFace {
+	name: string;
+	size: number;
+	division: string;
+	id: number;
+}
+
+const data: any[] = [];
+let newData: DataFace[] = [];
+
+// async function axiosTest() {
+// 	const response = await axios.get("/data.json");
+// 	const responseData = await response.data;
+// 	console.log(responseData);
+// 	return responseData;
+// }
+// axiosTest();
+
+async function getData() {
+	const testFuc = axios.get("/data.json").then((res) => {
+		const concatData = data.concat(res.data);
+		console.log(concatData);
+		const prevData: DataFace[] = concatData.map((item: any) => {
+			const newObj = {
+				name: item.대여소명,
+				size: item.거치대수,
+				division: item.대여소_구,
+				id: item.대여소ID,
+			};
+			return newObj;
+		});
+		console.log(prevData);
+		const testData = newData.concat(prevData);
+		console.log(testData);
+		return testData;
+	});
+	const result = await testFuc;
+	console.log(result);
+	newData = newData.concat(result);
+	return result;
+}
+getData();
+
+console.log(newData);
 
 const divGroupMap = d3.group(newData, (d) => d.division);
 

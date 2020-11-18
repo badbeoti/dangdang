@@ -3,6 +3,36 @@ import styled from "styled-components";
 import divisionList from "../data/divisionList";
 import ButtonList from "./ButtonList";
 import Canvas from "./Canvas";
+import axios from "axios";
+import * as d3 from "d3";
+
+const divisionArr = [
+	"강남구",
+	"강동구",
+	"강북구",
+	"강서구",
+	"관악구",
+	"광진구",
+	"구로구",
+	"금천구",
+	"노원구",
+	"도봉구",
+	"동작구",
+	"동대문구",
+	"마포구",
+	"서대문구",
+	"서초구",
+	"성동구",
+	"성북구",
+	"송파구",
+	"양천구",
+	"영등포구",
+	"용산구",
+	"은평구",
+	"종로구",
+	"중구",
+	"중랑구",
+];
 
 const InputBoard = styled.section`
 	display: grid;
@@ -23,23 +53,65 @@ const BtnSection = styled.section`
 	grid-template-columns: repeat(5, 1fr);
 	grid-gap: 8px;
 `;
-// grid-template-columns: repeat(auto-fit, minmax(150px, 1fr);
+// grid-template-columns: repeat(auto-fit, minmax(150px, 1fr);\
+
+interface DataFace {
+	name: string;
+	size: number;
+	division: string;
+	id: number;
+}
 
 function InputSection() {
-	const [arr, setArr] = useState(divisionList);
+	const [data, setData] = useState<DataFace[]>();
+	useEffect(() => {
+		const asdasd = async () => {
+			const getData = axios.get("/data.json").then((res) => {
+				const prevData = res.data;
+				const remakeData: DataFace[] = prevData.map((item: any) => {
+					const newObj = {
+						name: item.대여소명,
+						size: item.거치대수,
+						division: item.대여소_구,
+						id: item.대여소ID,
+					};
+					return newObj;
+				});
+				setData(remakeData);
+			});
+			const divGroupMap = d3.group(data!, (d) => d.division);
+			const divisionList = divisionArr.map((e: string, i: number) => {
+				const divisionObj = {
+					name: e,
+					id: i,
+					divC: divGroupMap.get(e)!.length,
+					bikeC: divGroupMap
+						.get(e)!
+						.map((data) => data.size)
+						.reduce((acc, cur) => acc + cur, 0),
+					isSelect: false,
+				};
+				return divisionObj;
+			});
+			setArr(divisionList);
+			await getData;
+		};
+		asdasd();
+	});
+	const [arr, setArr] = useState<
+		{
+			name: string;
+			id: number;
+			divC: number;
+			bikeC: number;
+			isSelect: boolean;
+		}[]
+	>();
 	// 미리 가공된 data를 useState로 담는다.
 
 	const [axis, setAxis] = useState({
 		changeAxis: false,
 	});
-
-	// useEffect(() => {
-	// 	setAxis({
-	// 		changeAxis: false,
-	// 	});
-	// });
-
-	console.log(axis.changeAxis);
 
 	const onSetAxis = () => {
 		setAxis({
@@ -49,7 +121,7 @@ function InputSection() {
 
 	const onToggle = (key: number) => {
 		setArr(
-			arr.map((div) =>
+			arr!.map((div) =>
 				div.id === key ? { ...div, isSelect: !div.isSelect } : div
 			)
 		);
@@ -58,7 +130,7 @@ function InputSection() {
 
 	const onReset = () => {
 		setArr(
-			arr
+			arr!
 				.sort((a, b) => (a.id > b.id ? 1 : -1))
 				.map((div) => (div.isSelect ? { ...div, isSelect: false } : div))
 		);
@@ -70,14 +142,14 @@ function InputSection() {
 		<InputBoard>
 			<CanvasSection>
 				<Canvas
-					divisionList={arr}
+					divisionList={arr!}
 					onReset={onReset}
 					axis={axis}
 					onSetAxis={onSetAxis}
 				></Canvas>
 			</CanvasSection>
 			<BtnSection>
-				<ButtonList divisionList={arr} onToggle={onToggle}></ButtonList>
+				<ButtonList divisionList={arr!} onToggle={onToggle}></ButtonList>
 			</BtnSection>
 		</InputBoard>
 	);
