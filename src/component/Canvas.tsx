@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import styled, { css } from "styled-components";
-// import divisionList from "../data/divisionList";
+import divisionList from "../data/divisionList";
 import * as d3 from "d3";
 import { select, Selection } from "d3-selection";
 import {
@@ -27,6 +27,10 @@ interface SelectList {
 		changeAxis: boolean;
 	};
 	onSetAxis: () => void;
+}
+
+interface Axis {
+	axis: (selection: Selection<SVGGElement, unknown, null, undefined>) => void;
 }
 
 const canvas = {
@@ -70,8 +74,10 @@ const ToggleBtn: any = styled.button`
 	border-radius: 1rem;
 `;
 
+const initialData = divisionList.sort((a, b) => (a.id > b.id ? 1 : -1));
+
 function Canvas({ divisionList, onReset, axis, onSetAxis }: SelectList) {
-	const [selectList, setList] = useState(divisionList!);
+	const [selectList, setList] = useState(divisionList);
 	const ref = useRef(null);
 	const [selection, setSelection] = useState<null | Selection<
 		null,
@@ -79,8 +85,6 @@ function Canvas({ divisionList, onReset, axis, onSetAxis }: SelectList) {
 		null,
 		undefined
 	>>(null);
-
-	const initialData = divisionList;
 
 	let x = scaleBand()
 		.domain(selectList.map((d) => d.name))
